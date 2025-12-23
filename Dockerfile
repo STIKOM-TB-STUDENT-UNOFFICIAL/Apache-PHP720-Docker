@@ -3,7 +3,8 @@ FROM debian:stretch
 ENV PHP_VERSION=7.2.0
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list && \
+RUN echo "deb http://archive.debian.org/debian stretch main" > /etc/apt/sources.list && \
+    echo "deb http://archive.debian.org/debian-security stretch/updates main" >> /etc/apt/sources.list && \
     echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until
 
 RUN apt-get update && apt-get install -y \
@@ -41,9 +42,9 @@ RUN ./configure \
     --with-zlib \
     --with-openssl \
     --with-gd \
-    --with-jpeg-dir \
-    --with-png-dir \
-    --with-freetype-dir \
+    --with-jpeg-dir=/usr \
+    --with-png-dir=/usr \
+    --with-freetype-dir=/usr \
     --enable-zip \
     && make -j$(nproc) \
     && make install
@@ -51,6 +52,8 @@ RUN ./configure \
 RUN cp php.ini-development /usr/local/lib/php.ini
 
 RUN a2enmod rewrite vhost_alias
+
+#RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 EXPOSE 80
 
