@@ -53,7 +53,7 @@ RUN ./configure \
 
 RUN cp php.ini-development /usr/local/lib/php.ini
 
-RUN a2dismod mpm_event && a2enmod mpm_prefork && a2enmod rewrite vhost_alias
+RUN a2dismod mpm_event && a2enmod mpm_prefork && a2enmod rewrite vhost_alias && a2enmod php7
 
 # RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
