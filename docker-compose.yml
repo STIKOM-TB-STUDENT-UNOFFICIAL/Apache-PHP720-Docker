@@ -1,0 +1,11 @@
+services:
+  apache:
+    #image: php:7.2-apache
+    build: .
+    container_name: apache_php720
+    ports:
+      - "80:80"
+    volumes:
+      - /var/www/html:/var/www/html
+      - ./vhost.conf:/etc/apache2/sites-available/000-default.conf
+    restart: unless-stopped
